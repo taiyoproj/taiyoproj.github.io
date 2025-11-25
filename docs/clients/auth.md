@@ -84,21 +84,23 @@ For custom authentication schemes, you can extend the `SolrAuth` base class:
 ```python
 from taiyo.client.auth import SolrAuth
 
+
 class APIKeyAuth(SolrAuth):
     """Custom API key authentication."""
-    
+
     def __init__(self, api_key: str):
         self.api_key = api_key
-    
+
     def apply(self, client):
         """Apply API key to client headers."""
         client.set_header("My-API-Key", self.api_key)
+
 
 auth = APIKeyAuth("my-secret-key")
 client = SolrClient("http://localhost:8983/solr", auth=auth)
 ```
 
-### Error Handling
+## Error Handling
 
 When a Taiyo client fails, it will raise a `SolrError` instance.
 
@@ -106,10 +108,8 @@ When a Taiyo client fails, it will raise a `SolrError` instance.
 from taiyo import SolrClient, SolrError
 
 try:
-    client = SolrClient(
-        "http://localhost:8983/solr",
-        auth=BasicAuth(username="admin", password="wrong")
-    )
+    auth = BasicAuth(username="admin", password="wrong")
+    client = SolrClient("http://localhost:8983/solr", auth=auth)
     client.ping()
 except SolrError as e:
     if e.status_code == 401:
@@ -118,25 +118,6 @@ except SolrError as e:
         print("Forbidden - user doesn't have required permissions")
 ```
 
-### SSL Configuration
-
-Taiyo clients use `httpx.Client` and `httpx.AsyncClient`, and you can pass in any kwargs supported by httpx such as `verify` which defaults to `True`.
-
-```python
-# Temporarily disable verification for debugging
-client = SolrClient(
-    "https://solr.example.com/solr",
-    auth=BasicAuth(username="admin", password="pass"),
-    verify=False
-)
-
-# Or provide custom CA bundle
-client = SolrClient(
-    "https://solr.example.com/solr",
-    auth=BasicAuth(username="admin", password="pass"),
-    verify="/path/to/custom-ca-bundle.crt"
-)
-```
 
 ## Next Steps
 

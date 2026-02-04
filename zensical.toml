@@ -357,7 +357,7 @@ alternate_style = true
 
 [project.plugins.mkdocstrings.handlers.python]
 inventories = ["https://docs.python.org/3/objects.inv"]
-paths = ["taiyo"]
+paths = ["./taiyo"]
 
 [project.plugins.mkdocstrings.handlers.python.options]
 docstring_style = "google"
